@@ -2,6 +2,8 @@
 # reservas.py
 
 from entidades import Entidad
+from clientes import Cliente
+from servicios import Servicio
 from excepciones import ReservaError, DatosInvalidosError
 
 
@@ -11,14 +13,23 @@ class Reserva(Entidad):
 
         super().__init__(identificacion)
 
-        if cliente is None:
-            raise DatosInvalidosError("Debe seleccionar un cliente.")
+        # Validar que se haya seleccionado un cliente.
+        if not isinstance(cliente, Cliente):
+            raise DatosInvalidosError(
+                "Debe seleccionar un cliente válido."
+            )
 
-        if servicio is None:
-            raise DatosInvalidosError("Debe seleccionar un servicio.")
+        # Validar que se haya seleccionado un servicio.
+        if not isinstance(servicio, Servicio):
+            raise DatosInvalidosError(
+                "Debe seleccionar un servicio válido."
+            )
 
+        # Validar la duración.
         if not isinstance(duracion, (int, float)) or isinstance(duracion, bool) or duracion <= 0:
-            raise DatosInvalidosError("La duración debe ser mayor que cero.")
+            raise DatosInvalidosError(
+                "La duración debe ser mayor que cero."
+            )
 
         self.cliente = cliente
         self.servicio = servicio
@@ -30,9 +41,11 @@ class Reserva(Entidad):
     def confirmar(self):
 
         if self.estado != "Pendiente":
-            raise ReservaError("La reserva no se puede confirmar.")
+            raise ReservaError(
+                "La reserva no se puede confirmar."
+            )
 
-        self.servicio.validar_disponibilidad()
+        self.servicio.validar_parametros(self.duracion)
         self.estado = "Confirmada"
 
         return "Reserva confirmada correctamente."
@@ -41,10 +54,14 @@ class Reserva(Entidad):
     def cancelar(self):
 
         if self.estado == "Cancelada":
-            raise ReservaError("La reserva ya está cancelada.")
+            raise ReservaError(
+                "La reserva ya está cancelada."
+            )
 
         if self.estado == "Procesada":
-            raise ReservaError("No se puede cancelar una reserva procesada.")
+            raise ReservaError(
+                "No se puede cancelar una reserva procesada."
+            )
 
         self.estado = "Cancelada"
 
@@ -58,13 +75,21 @@ class Reserva(Entidad):
                 "Solo se pueden procesar reservas confirmadas."
             )
 
-        self.costo = self.servicio.calcular_costo(
-            self.duracion, impuesto, descuento
-        )
+        try:
+            self.costo = self.servicio.calcular_costo(
+                self.duracion,
+                impuesto,
+                descuento
+            )
 
-        self.estado = "Procesada"
+            self.estado = "Procesada"
 
-        return self.costo
+            return self.costo
+
+        except DatosInvalidosError as error:
+            raise ReservaError(
+                "No fue posible procesar el costo de la reserva."
+            ) from error
 
     # Mostrar la información de la reserva.
     def describir(self):
