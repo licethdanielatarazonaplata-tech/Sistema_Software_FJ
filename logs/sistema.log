@@ -1,0 +1,110 @@
+2026-11-22 08:47:47,935 - INFO - Cliente registrado: C001
+2026-11-22 08:47:47,935 - INFO - Finalizó el intento de registro de cliente.
+2026-11-22 08:47:47,936 - INFO - Cliente registrado: C002
+2026-11-22 08:47:47,936 - INFO - Finalizó el intento de registro de cliente.
+2026-11-22 08:47:47,938 - ERROR - Operación fallida: Registrar cliente con datos inválidos
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\curso_python\Sistema_Software_FJ\main.py", line 23, in ejecutar_operacion
+    resultado = funcion()
+  File "C:\Users\Lenovo\curso_python\Sistema_Software_FJ\main.py", line 78, in cliente_invalido
+    Cliente("C003", "", "correo_incorrecto", "123")
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo\curso_python\Sistema_Software_FJ\clientes.py", line 17, in __init__
+    raise ClienteInvalidoError("El nombre no puede estar vacío.")
+excepciones.ClienteInvalidoError: El nombre no puede estar vacío.
+2026-11-22 08:47:48,048 - ERROR - Error al registrar cliente.
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\curso_python\Sistema_Software_FJ\gestor.py", line 48, in registrar_cliente
+    raise RegistroDuplicadoError(
+        "El cliente ya se encuentra registrado."
+    )
+excepciones.RegistroDuplicadoError: El cliente ya se encuentra registrado.
+2026-11-22 08:47:48,049 - INFO - Finalizó el intento de registro de cliente.
+2026-11-22 08:47:48,049 - ERROR - Operación fallida: Registrar cliente duplicado
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\curso_python\Sistema_Software_FJ\gestor.py", line 48, in registrar_cliente
+    raise RegistroDuplicadoError(
+        "El cliente ya se encuentra registrado."
+    )
+excepciones.RegistroDuplicadoError: El cliente ya se encuentra registrado.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\curso_python\Sistema_Software_FJ\main.py", line 23, in ejecutar_operacion
+    resultado = funcion()
+  File "C:\Users\Lenovo\curso_python\Sistema_Software_FJ\main.py", line 93, in <lambda>
+    lambda: sistema.registrar_cliente(cliente1)
+            ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\Lenovo\curso_python\Sistema_Software_FJ\gestor.py", line 56, in registrar_cliente
+    raise ClienteInvalidoError(
+        "No fue posible registrar el cliente."
+    ) from error
+excepciones.ClienteInvalidoError: No fue posible registrar el cliente.
+2026-11-22 08:47:48,051 - INFO - Servicio registrado: Sala de reuniones
+2026-11-22 08:47:48,051 - INFO - Finalizó el intento de registro de servicio.
+2026-11-22 08:47:48,052 - INFO - Servicio registrado: Computador portátil
+2026-11-22 08:47:48,052 - INFO - Finalizó el intento de registro de servicio.
+2026-11-22 08:47:48,053 - INFO - Servicio registrado: Asesoría en programación
+2026-11-22 08:47:48,053 - INFO - Finalizó el intento de registro de servicio.
+2026-11-22 08:47:48,054 - ERROR - Operación fallida: Crear servicio con tarifa inválida
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\curso_python\Sistema_Software_FJ\main.py", line 23, in ejecutar_operacion
+    resultado = funcion()
+  File "C:\Users\Lenovo\curso_python\Sistema_Software_FJ\main.py", line 150, in servicio_invalido
+    ReservaSala("S004", "Sala incorrecta", -100)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo\curso_python\Sistema_Software_FJ\servicios.py", line 20, in __init__
+    raise DatosInvalidosError("La tarifa debe ser mayor que cero.")
+excepciones.DatosInvalidosError: La tarifa debe ser mayor que cero.
+2026-11-22 08:47:48,056 - INFO - Reserva creada: R001
+2026-11-22 08:47:48,056 - INFO - Finalizó el intento de creación de reserva.
+2026-11-22 08:47:48,058 - WARNING - Cliente no encontrado: C999
+2026-11-22 08:47:48,058 - ERROR - Error al crear reserva.
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\curso_python\Sistema_Software_FJ\gestor.py", line 123, in crear_reserva
+    raise ValueError("El cliente no existe.")
+ValueError: El cliente no existe.
+2026-11-22 08:47:48,058 - INFO - Finalizó el intento de creación de reserva.
+2026-11-22 08:47:48,059 - ERROR - Operación fallida: Crear reserva con cliente inexistente
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\curso_python\Sistema_Software_FJ\gestor.py", line 123, in crear_reserva
+    raise ValueError("El cliente no existe.")
+ValueError: El cliente no existe.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\curso_python\Sistema_Software_FJ\main.py", line 23, in ejecutar_operacion
+    resultado = funcion()
+  File "C:\Users\Lenovo\curso_python\Sistema_Software_FJ\main.py", line 208, in <lambda>
+    lambda: sistema.crear_reserva(
+            ~~~~~~~~~~~~~~~~~~~~~^
+        "R002", "C999", "S001", 2
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Lenovo\curso_python\Sistema_Software_FJ\gestor.py", line 142, in crear_reserva
+    raise ReservaError(
+        "No se pudo crear la reserva."
+    ) from error
+excepciones.ReservaError: No se pudo crear la reserva.
+2026-11-22 08:47:48,060 - INFO - Reserva creada: R003
+2026-11-22 08:47:48,060 - INFO - Finalizó el intento de creación de reserva.
+2026-11-22 08:47:48,061 - INFO - Reserva creada: R004
+2026-11-22 08:47:48,062 - INFO - Finalizó el intento de creación de reserva.
+2026-11-22 08:47:48,062 - ERROR - Operación fallida: Intentar reservar servicio no disponible
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\curso_python\Sistema_Software_FJ\main.py", line 23, in ejecutar_operacion
+    resultado = funcion()
+  File "C:\Users\Lenovo\curso_python\Sistema_Software_FJ\main.py", line 260, in probar_servicio_no_disponible
+    reserva3.confirmar()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Lenovo\curso_python\Sistema_Software_FJ\reservas.py", line 35, in confirmar
+    self.servicio.validar_disponibilidad()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Lenovo\curso_python\Sistema_Software_FJ\servicios.py", line 29, in validar_disponibilidad
+    raise ServicioNoDisponibleError(
+        f"El servicio {self.nombre} no está disponible."
+    )
+excepciones.ServicioNoDisponibleError: El servicio Asesoría en programación no está disponible.
