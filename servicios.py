@@ -10,7 +10,6 @@ from excepciones import DatosInvalidosError, ServicioNoDisponibleError
 class Servicio(Entidad):
 
     def __init__(self, identificacion, nombre, tarifa_base):
-
         super().__init__(identificacion)
 
         if not isinstance(nombre, str) or not nombre.strip():
@@ -23,24 +22,22 @@ class Servicio(Entidad):
         self.tarifa_base = float(tarifa_base)
         self.disponible = True
 
-    # Validar que el servicio esté disponible.
+    # Validar disponibilidad del servicio.
     def validar_disponibilidad(self):
         if not self.disponible:
             raise ServicioNoDisponibleError(
                 f"El servicio {self.nombre} no está disponible."
             )
 
-    # Validar la duración.
+    # Método general para validar parámetros.
     def validar_parametros(self, duracion):
         if not isinstance(duracion, (int, float)) or isinstance(duracion, bool) or duracion <= 0:
             raise DatosInvalidosError("La duración debe ser mayor que cero.")
 
         self.validar_disponibilidad()
 
-    # Método con parámetros opcionales.
-    # Permite calcular costos con impuestos y descuentos.
+    # Cálculo de costos con parámetros opcionales.
     def calcular_costo(self, duracion, impuesto=0, descuento=0):
-
         self.validar_parametros(duracion)
 
         if not isinstance(impuesto, (int, float)) or isinstance(impuesto, bool) or not 0 <= impuesto <= 100:
@@ -67,6 +64,15 @@ class Servicio(Entidad):
 # Servicio especializado: reserva de salas.
 class ReservaSala(Servicio):
 
+    # Validación sobrescrita para reservas de salas.
+    def validar_parametros(self, duracion):
+        super().validar_parametros(duracion)
+
+        if duracion > 12:
+            raise DatosInvalidosError(
+                "La reserva de una sala no puede superar 12 horas."
+            )
+
     def calcular_base(self, duracion):
         self.validar_parametros(duracion)
         return self.tarifa_base * duracion
@@ -77,6 +83,15 @@ class ReservaSala(Servicio):
 
 # Servicio especializado: alquiler de equipos.
 class AlquilerEquipo(Servicio):
+
+    # Validación sobrescrita para alquiler de equipos.
+    def validar_parametros(self, duracion):
+        super().validar_parametros(duracion)
+
+        if duracion > 24:
+            raise DatosInvalidosError(
+                "El alquiler de equipos no puede superar 24 horas."
+            )
 
     def calcular_base(self, duracion):
         self.validar_parametros(duracion)
@@ -89,9 +104,19 @@ class AlquilerEquipo(Servicio):
 # Servicio especializado: asesorías especializadas.
 class Asesoria(Servicio):
 
+    # Validación sobrescrita para asesorías.
+    def validar_parametros(self, duracion):
+        super().validar_parametros(duracion)
+
+        if duracion > 8:
+            raise DatosInvalidosError(
+                "Una asesoría no puede superar 8 horas."
+            )
+
     def calcular_base(self, duracion):
         self.validar_parametros(duracion)
         return self.tarifa_base * duracion
 
     def describir(self):
         return f"Asesoría: {self.nombre} - Tarifa por hora: ${self.tarifa_base:,.2f}"
+
