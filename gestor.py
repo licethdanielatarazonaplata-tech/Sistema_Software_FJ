@@ -7,7 +7,6 @@ import logging
 from excepciones import (
     ClienteInvalidoError,
     RegistroDuplicadoError,
-    ServicioNoDisponibleError,
     ReservaError
 )
 
@@ -23,14 +22,13 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
     encoding="utf-8"
-    )
+)
 
 
 # Clase encargada de administrar el sistema.
 class Gestor:
 
     def __init__(self):
-
         # Listas internas, sin utilizar bases de datos.
         self.clientes = []
         self.servicios = []
@@ -51,8 +49,12 @@ class Gestor:
 
             self.clientes.append(cliente)
 
-        except Exception as error:
+        except (ClienteInvalidoError, RegistroDuplicadoError):
             logging.exception("Error al registrar cliente.")
+            raise
+
+        except Exception as error:
+            logging.exception("Error inesperado al registrar cliente.")
             raise ClienteInvalidoError(
                 "No fue posible registrar el cliente."
             ) from error
@@ -125,17 +127,21 @@ class Gestor:
             if servicio is None:
                 raise ValueError("El servicio no existe.")
 
-            reserva = Reserva(
-                identificacion, cliente, servicio, duracion
-            )
-
             for existente in self.reservas:
                 if existente.identificacion == identificacion:
                     raise RegistroDuplicadoError(
                         "La reserva ya existe."
                     )
 
+            reserva = Reserva(
+                identificacion, cliente, servicio, duracion
+            )
+
             self.reservas.append(reserva)
+
+        except RegistroDuplicadoError:
+            logging.exception("La reserva está duplicada.")
+            raise
 
         except Exception as error:
             logging.exception("Error al crear reserva.")
@@ -168,4 +174,3 @@ class Gestor:
         for reserva in self.reservas:
             print(reserva.describir())
             print("-" * 40)
-
