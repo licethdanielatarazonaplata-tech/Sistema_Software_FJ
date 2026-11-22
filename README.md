@@ -45,4 +45,4 @@ Los archivos se utilizan para registrar eventos y errores.
 
 ## Integrantes
 
-- Integrante 1: LICETH DANIELA TARAZONA PLATA.
+- Estudiante: LICETH DANIELA TARAZONA PLATA.
